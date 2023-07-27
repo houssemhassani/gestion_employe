@@ -45,8 +45,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    #[ORM\Column(type:"boolean")]
+    #[ORM\Column(type:"datetime")]
     private $enabled;
+    private $comments;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -108,10 +109,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getEmail(): ?string
     {
         return $this->email;
-    }
-    public function getCin(): ?string
-    {
-        return $this->cin;
     }
     
     public function getNumTel(): ?string
@@ -179,7 +176,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has EMPLOYE
-        $roles[] = 'EMPLOYE';
+        //$roles[] = 'EMPLOYE';
 
         return array_unique($roles);
     }
