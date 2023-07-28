@@ -92,6 +92,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->token;
     }
+    public function getCin(): ?string
+    {
+        return $this->cin;
+    }
 
     public function setToken(?string $token): self
     {

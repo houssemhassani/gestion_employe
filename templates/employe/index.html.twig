@@ -1,45 +1,61 @@
-{% extends 'base.html.twig' %}
+{% extends 'template.html.twig' %}
 
 {% block title %}Employe index{% endblock %}
 
 {% block body %}
-    <h1>List of Employe</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Email</th>
-                <th>Cin</th>
-                <th>Roles</th>
-                <th>NumTel</th>
-                <th>CreatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.nom }}</td>
-                <td>{{ user.prenom }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.cin }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.numTel }}</td>
-                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_employe_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_employe_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
+   
+    <div class="col-xs-12">
+          <div class="box">
+             <div class="box-header">
+                <h3 class="box-title">List of Employe</h3>
+             </div>
+             <div class="box-body">
+             <div class="box-footer">
+                <button type="submit" class="btn btn-info pull-right"><a href="{{ path('app_employe_new') }}">Create new</a></button>
+              </div>
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Email</th>
+                    <th>Cin</th>
+                    <th>Roles</th>
+                    <th>NumTel</th>
+                    <th>CreatedAt</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.cin }}</td>
+                        <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                        <td>{{ user.numTel }}</td>
+                        <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a href="{{ path('app_employe_show', {'id': user.id}) }}">show</a>
+                            <a href="{{ path('app_employe_edit', {'id': user.id}) }}">edit</a>
+                        </td>
+                    </tr>
         {% else %}
             <tr>
                 <td colspan="11">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
-    </table>
+        </table>
+        </div>
+        </div>
+        </div>
 
-    <a href="{{ path('app_employe_new') }}">Create new</a>
+    
+       
+
+    
+  
 {% endblock %}
