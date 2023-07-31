@@ -12,10 +12,11 @@
              </div>
              <div class="box-body">
              <div class="box-footer">
-                <button type="submit" class="btn btn-info pull-right"><a href="{{ path('app_employe_new') }}">New Employe</a></button>
+                <button type="submit" class="btn btn-info pull-right"><a href="{{ path('app_g_r_h_new') }}">New Humain Management</a></button>
               </div>
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
+                
                 <tr>
                     <th>Nom</th>
                     <th>Prenom</th>
@@ -29,6 +30,7 @@
                 </thead>
                 <tbody>
                     {% for user in users %}
+                        {% if user.roles[0]=='EMPLOYE' %}
                     <tr>
                         <td>{{ user.nom }}</td>
                         <td>{{ user.prenom }}</td>
@@ -36,12 +38,13 @@
                         <td>{{ user.cin }}</td>
                         <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                         <td>{{ user.numTel }}</td>
-                        <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ user.createdAt ? user.createdAt|date('Y-m-d') : '' }}</td>
                         <td>
                             <a href="{{ path('app_employe_show', {'id': user.id}) }}">show</a>
-                            <a href="{{ path('app_employe_edit', {'id': user.id}) }}">edit</a>
+                            <a href="{{ path('app_g_r_h_edit', {'id': user.id}) }}">edit</a>
                         </td>
                     </tr>
+                    {% endif %}
         {% else %}
             <tr>
                 <td colspan="11">no records found</td>
@@ -52,10 +55,4 @@
         </div>
         </div>
         </div>
-
-    
-       
-
-    
-  
 {% endblock %}

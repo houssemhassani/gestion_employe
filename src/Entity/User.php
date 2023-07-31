@@ -45,9 +45,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    #[ORM\Column(type:"datetime")]
+    #[ORM\Column(type:"boolean")]
     private $enabled;
-    private $comments;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
