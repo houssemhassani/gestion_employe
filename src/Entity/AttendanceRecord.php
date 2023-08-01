@@ -15,7 +15,7 @@ class AttendanceRecord
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy: 'attendanceRecord', targetEntity: attendance::class)]
+    #[ORM\OneToMany(mappedBy: 'attendanceRecord', targetEntity: Attendance::class)]
     private Collection $attendances;
 
     #[ORM\Column(length: 150)]
@@ -38,7 +38,7 @@ class AttendanceRecord
     }
 
     /**
-     * @return Collection<int, attendance>
+     * @return Collection<int, Attendance>
      */
     public function getAttendances(): Collection
     {

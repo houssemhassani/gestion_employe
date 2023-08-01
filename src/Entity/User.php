@@ -58,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Formation::class, mappedBy: 'employes')]
     private Collection $formations;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: attendancerecord::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: AttendanceRecord::class)]
     private Collection $attendancerecord;
 
     #[ORM\OneToMany(mappedBy: 'employe', targetEntity: LeaveRequest::class)]
@@ -69,7 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?float $salary = null;
 
-    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Payroll::class)]
+    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: PayRoll::class)]
     private Collection $payrolls;
 
     public function __construct()
@@ -277,14 +277,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, attendancerecord>
+     * @return Collection<int, AttendanceRequest>
      */
     public function getAttendancerecord(): Collection
     {
         return $this->attendancerecord;
     }
 
-    public function addAttendancerecord(attendancerecord $attendancerecord): static
+    public function addAttendancerecord(AttendanceRecord $attendancerecord): static
     {
         if (!$this->attendancerecord->contains($attendancerecord)) {
             $this->attendancerecord->add($attendancerecord);
@@ -294,7 +294,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeAttendancerecord(attendancerecord $attendancerecord): static
+    public function removeAttendancerecord(AttendanceRequest $attendancerecord): static
     {
         if ($this->attendancerecord->removeElement($attendancerecord)) {
             // set the owning side to null (unless already changed)

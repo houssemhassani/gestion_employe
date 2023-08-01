@@ -2,27 +2,27 @@
 
 namespace App\Form;
 
-use App\Entity\Attendance;
+use App\Entity\LeaveRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AttendanceType extends AbstractType
+class LeaveRequestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('CreatedAt')
-            ->add('UpdateAt')
-            ->add('typeOfAttendace')
-            ->add('attendanceRecord')
+            ->add('createdAt')
+            ->add('SortedDate')
+            ->add('returnedDate')
+            ->add('numberOfDayLeaved')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Attendance::class,
+            'data_class' => LeaveRequest::class,
         ]);
     }
 }

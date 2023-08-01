@@ -2,27 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\Attendance;
+use App\Entity\AttendanceRecord;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AttendanceType extends AbstractType
+class AttendanceRecordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('CreatedAt')
-            ->add('UpdateAt')
-            ->add('typeOfAttendace')
-            ->add('attendanceRecord')
+            ->add('month')
+            ->add('year')
+            ->add('user')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Attendance::class,
+            'data_class' => AttendanceRecord::class,
         ]);
     }
 }

@@ -30,7 +30,7 @@ class PayRoll
     private ?float $TotalSalary = null;
 
     #[ORM\ManyToOne(inversedBy: 'payrolls')]
-    private ?user $employee = null;
+    private ?User $employee = null;
 
     public function __construct()
     {
@@ -93,12 +93,12 @@ class PayRoll
         return $this;
     }
 
-    public function getEmployee(): ?user
+    public function getEmployee(): ?User
     {
         return $this->employee;
     }
 
-    public function setEmployee(?user $employee): static
+    public function setEmployee(?User $employee): static
     {
         $this->employee = $employee;
 
