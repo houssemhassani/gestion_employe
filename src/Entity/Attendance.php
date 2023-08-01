@@ -27,6 +27,9 @@ class Attendance
     #[ORM\Column]
     private ?bool $typeOfAttendace = null;
 
+    #[ORM\ManyToOne(inversedBy: 'attendances')]
+    private ?AttendanceRecord $attendanceRecord = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +79,18 @@ class Attendance
     public function setTypeOfAttendace(bool $typeOfAttendace): static
     {
         $this->typeOfAttendace = $typeOfAttendace;
+
+        return $this;
+    }
+
+    public function getAttendanceRecord(): ?AttendanceRecord
+    {
+        return $this->attendanceRecord;
+    }
+
+    public function setAttendanceRecord(?AttendanceRecord $attendanceRecord): static
+    {
+        $this->attendanceRecord = $attendanceRecord;
 
         return $this;
     }
