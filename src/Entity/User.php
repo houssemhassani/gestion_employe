@@ -72,6 +72,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: PayRoll::class)]
     private Collection $payrolls;
 
+    #[ORM\OneToMany(mappedBy: 'employe', targetEntity: Score::class)]
+    private Collection $scores;
+
     public function __construct()
     {
         $this->roles = ['EMPLOYE'];
@@ -81,6 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->attendancerecord = new ArrayCollection();
         $this->leaveRequests = new ArrayCollection();
         $this->payrolls = new ArrayCollection();
+        $this->scores = new ArrayCollection();
        
     }
 
@@ -377,6 +381,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($payroll->getEmployee() === $this) {
                 $payroll->setEmployee(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Score>
+     */
+    public function getScores(): Collection
+    {
+        return $this->scores;
+    }
+
+    public function addScore(Score $score): static
+    {
+        if (!$this->scores->contains($score)) {
+            $this->scores->add($score);
+            $score->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScore(Score $score): static
+    {
+        if ($this->scores->removeElement($score)) {
+            // set the owning side to null (unless already changed)
+            if ($score->getEmploye() === $this) {
+                $score->setEmploye(null);
             }
         }
 
