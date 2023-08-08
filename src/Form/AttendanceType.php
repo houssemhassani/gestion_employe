@@ -11,12 +11,7 @@ class AttendanceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('CreatedAt')
-            ->add('UpdateAt')
-            ->add('typeOfAttendace')
-            ->add('attendanceRecord')
-        ;
+          
     }
 
     public function configureOptions(OptionsResolver $resolver): void

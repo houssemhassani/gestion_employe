@@ -38,8 +38,10 @@
                         <td>{{ user.numTel }}</td>
                         <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                         <td>
-                            <a href="{{ path('app_employe_show', {'id': user.id}) }}">show</a>
-                            <a href="{{ path('app_employe_edit', {'id': user.id}) }}">edit</a>
+                            <a href="{{ path('app_employe_show', {'id': user.id}) }}">Show</a>
+                            <a href="{{ path('app_employe_edit', {'id': user.id}) }}">Edit</a>
+                            <a href="{{ path('app_attendance_present', {'id': user.id}) }}">Present</a>
+                            <a href="{{ path('app_attendance_absent', {'id': user.id}) }}">Absent</a>
                         </td>
                     </tr>
         {% else %}

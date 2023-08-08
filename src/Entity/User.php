@@ -298,7 +298,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeAttendancerecord(AttendanceRequest $attendancerecord): static
+    public function removeAttendancerecord(AttendanceRecord $attendancerecord): static
     {
         if ($this->attendancerecord->removeElement($attendancerecord)) {
             // set the owning side to null (unless already changed)

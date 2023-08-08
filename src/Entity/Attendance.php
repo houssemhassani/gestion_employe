@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\AttendanceRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
 
 #[ORM\Entity(repositoryClass: AttendanceRepository::class)]
 class Attendance

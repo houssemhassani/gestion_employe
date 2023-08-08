@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Attendance;
+use App\Entity\User;
 use App\Form\AttendanceType;
 use App\Repository\AttendanceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Repository\UserRepository;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/attendance')]
@@ -22,12 +24,43 @@ class AttendanceController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_attendance_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/present/{id}', name: 'app_attendance_present', methods: ['GET', 'POST'])]
+    public function present(Request $request, EntityManagerInterface $entityManager,UserRepository $userRepository,$id): Response
     {
+        $user=new User();
+        $user=$userRepository->findOneBy(['id'=>$id]);
         $attendance = new Attendance();
+        $attendance->setUser($user);
+        $attendance->setTypeOfAttendace(true);
+        $attendance->setCreatedAt(new \DateTime());
         $form = $this->createForm(AttendanceType::class, $attendance);
         $form->handleRequest($request);
+       
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($attendance);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_attendance_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('attendance/new.html.twig', [
+            'attendance' => $attendance,
+            'form' => $form,
+        ]);
+    }
+    #[Route('/absent/{id}', name: 'app_attendance_absent', methods: ['GET', 'POST'])]
+    public function absent(Request $request, EntityManagerInterface $entityManager,UserRepository $userRepository,$id): Response
+    {
+        $user=new User();
+        $user=$userRepository->findOneBy(['id'=>$id]);
+        $attendance = new Attendance();
+        $attendance->setUser($user);
+        $attendance->setTypeOfAttendace(false);
+        $attendance->setCreatedAt(new \DateTime());
+        $form = $this->createForm(AttendanceType::class, $attendance);
+        $form->handleRequest($request);
+       
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($attendance);
