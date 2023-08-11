@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Service\PdfService;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,11 +44,13 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_employe_show', methods: ['GET'])]
-    public function show(User $user): Response
+    public function show(User $user,PdfService $pdf): Response
     {
-        return $this->render('employe/show.html.twig', [
+        $html=$this->render('employe/show.html.twig',['user'=>$user]);
+        $pdf->showPdFile($html);
+        /* return $this->render('employe/show.html.twig', [
             'user' => $user,
-        ]);
+        ]); */
     }
 
     #[Route('/{id}/edit', name: 'app_employe_edit', methods: ['GET', 'POST'])]
