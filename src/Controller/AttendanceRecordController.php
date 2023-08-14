@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\AttendanceRecord;
 use App\Entity\Attendance;
 use App\Form\AttendanceRecordType;
-use App\Service\AttendanceService;
+use App\Repository\UserRepository;
 use App\Service\PdfService;
 use App\Entity\User;
 
@@ -47,13 +47,35 @@ class AttendanceRecordController extends AbstractController
         ]);
     }
 
-    #[Route('/getAllAttendanceByEmploye/{id}', name: 'app_all_attendance_record_show', methods: ['GET'])]
-    public function getAllAttendanceByEmploye(User $user,PdfService $pdf,AttendanceService $attendanceRecordService): Response
+    #[Route('/getAllAttendanceByEmployee/{id}', name: 'app_all_attendance_record_show', methods: ['GET'])]
+    public function getAllAttendanceByEmploye(User $user,UserRepository $userRepository,PdfService $pdf): Response
     {
+        
         $attendanceRecord=new AttendanceRecord();
-        $attendanceRecord->setUser($user);
-        $attendanceRecord->addAttendance($attendanceRecordService->getAllAttendanceAndByUser(1,2023,8));
-        $html=$this->render('attendance_record/index.html.twig',['attendance_record'=>$attendanceRecord,'user'=>$user],);
+        $user=$userRepository->find($user->getId());
+        if (!$user instanceof User) {
+            throw $this->createNotFoundException('User not found.');
+        }
+
+        // Récupérer l'AttendanceRecord pour l'année 2023 et le mois 08
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        $attendanceRecord = $entityManager->getRepository(AttendanceRecord::class)
+            ->findOneBy([
+                'user' => $user,
+                'year' => 2023,
+                'month' => 8
+            ]);
+            
+
+        // Vérifier si l'AttendanceRecord existe
+        if (!$attendanceRecord instanceof AttendanceRecord) {
+            throw $this->createNotFoundException('Attendance record not found.');
+        }
+
+        // Récupérer la liste des attendances associées à cet AttendanceRecord
+        $attendances = $attendanceRecord->getAttendancess();
+        $html=$this->render('attendance_record/index.html.twig',['attendances'=>$attendances,'employe'=>$user],);
         $pdf->showPdFile($html);
         /* return $this->render('attendace_record/index.html.twig', [
             'user' => $user,

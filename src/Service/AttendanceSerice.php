@@ -2,7 +2,7 @@
 namespace App\Service;
 use App\Repository\UserRepository;
 use App\Repository\AttendanceRecordRepository;
-use App\Repository\AttendaceRepository;
+use App\Repository\AttendanceRepository;
 use App\Entity\User;
 use App\Entity\Attendance;
 use App\Entity\AttendanceRecord;
@@ -10,10 +10,10 @@ use App\Entity\AttendanceRecord;
 
  class AttendanceService {
     private UserRepository $userRepository ;
-    private AttendaceRepository $attendanceRepository;
+    private AttendanceRepository $attendanceRepository;
     private AttendanceRecordRepository $attendanceRecordRepository;
 
-    public function getAllAttendanceAndByUser(int $id,int $year,int $month):any
+    public function getAllAttendanceAndByUser(int $id,int $year,int $month)
     {
         $user=$this->userRepository->find($id);
         if (!$user instanceof User) {
@@ -22,12 +22,14 @@ use App\Entity\AttendanceRecord;
 
         // Récupérer l'AttendanceRecord pour l'année 2023 et le mois 08
         $entityManager = $this->getDoctrine()->getManager();
+        
         $attendanceRecord = $entityManager->getRepository(AttendanceRecord::class)
             ->findOneBy([
                 'user' => $user,
                 'year' => 2023,
                 'month' => 8
             ]);
+            echo($attendanceRecord);
 
         // Vérifier si l'AttendanceRecord existe
         if (!$attendanceRecord instanceof AttendanceRecord) {

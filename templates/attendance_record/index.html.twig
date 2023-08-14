@@ -1,49 +1,62 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}AttendanceRecord index{% endblock %}
-
-{% block body %}
-    <h1>Attendance sheet </h1>
-
-    <ul>
-        <li><div class="timeline-item">
-                <span class="time"><i class="fa fa-clock-o"></i> </span>
-                <h3 >Nom :
-                
-                <h4 class="timeline-header no-border">{{user.nom}}  {{user.prenom}}</h4>
-              </div>
-              </li>
-              <li>
-             
-
-    <table class="table">
-    <h3>List Attendance</h3>
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .employee-info {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Employee Attendance Report</h1>
+    </div>
+    
+    <div class="employee-info">
+        <p><strong>Employee Name:</strong> {{ employe.nom }}  {{employe.prenom}}</p>
+        <p><strong>Employee CIN:</strong> {{ employe.cin }}</p>
+    </div>
+    
+    <table>
         <thead>
             <tr>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th>Date</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
-        {% for attendance_record in attendance_records %}
-            <tr>
-                <td>{{ attendance_record.month }}</td>
-                <td>{{ attendance_record.year }}</td>
-                <td><table > <thead><tr><td>TypeD'absence</td></tr></thead> <tbody>{%for att in attendance_record.attendancess %}<tr> <td>{{att.typeOfAttendace}}</td></tr>{%endfor%}</tbody></table></td>
-                <td>
-                    <a href="{{ path('app_attendance_record_show', {'id': attendance_record.id}) }}">show</a>
-                    <a href="{{ path('app_attendance_record_edit', {'id': attendance_record.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
+            {% for attendance in attendances %}
+                <tr>
+                    <td>{{ attendance.createdAt|date('Y-m-d') }}</td>
+                    <td>{{ attendance.typeOfAttendace ? 'Present' : 'Absent' }}</td>
+                </tr>
+            {% endfor %}
         </tbody>
-    </table></li>
-    </ul>
-
-    <a href="{{ path('app_attendance_record_new') }}">Create new</a>
-{% endblock %}
+    </table>
+</body>
+</html>
