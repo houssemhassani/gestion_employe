@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -53,11 +55,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $token;
 
+    #[ORM\ManyToMany(targetEntity: Formation::class, mappedBy: 'employes')]
+    private Collection $formations;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: AttendanceRecord::class)]
+    private Collection $attendancerecord;
+
+    #[ORM\OneToMany(mappedBy: 'employe', targetEntity: LeaveRequest::class)]
+    private Collection $leaveRequests;
+
+    
+
+    #[ORM\Column]
+    private ?float $salary = null;
+
+    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: PayRoll::class)]
+    private Collection $payrolls;
+
+    #[ORM\OneToMany(mappedBy: 'employe', targetEntity: Score::class)]
+    private Collection $scores;
+
     public function __construct()
     {
         $this->roles = ['EMPLOYE'];
         $this->createdAt = new \DateTime();
         $this->enabled = false;
+        $this->formations = new ArrayCollection();
+        $this->attendancerecord = new ArrayCollection();
+        $this->leaveRequests = new ArrayCollection();
+        $this->payrolls = new ArrayCollection();
+        $this->scores = new ArrayCollection();
        
     }
 
@@ -224,5 +251,169 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Formation>
+     */
+    public function getFormations(): Collection
+    {
+        return $this->formations;
+    }
+
+    public function addFormation(Formation $formation): static
+    {
+        if (!$this->formations->contains($formation)) {
+            $this->formations->add($formation);
+            $formation->addEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFormation(Formation $formation): static
+    {
+        if ($this->formations->removeElement($formation)) {
+            $formation->removeEmploye($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AttendanceRequest>
+     */
+    public function getAttendancerecord(): Collection
+    {
+        return $this->attendancerecord;
+    }
+
+    public function addAttendancerecord(AttendanceRecord $attendancerecord): static
+    {
+        if (!$this->attendancerecord->contains($attendancerecord)) {
+            $this->attendancerecord->add($attendancerecord);
+            $attendancerecord->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttendancerecord(AttendanceRecord $attendancerecord): static
+    {
+        if ($this->attendancerecord->removeElement($attendancerecord)) {
+            // set the owning side to null (unless already changed)
+            if ($attendancerecord->getUser() === $this) {
+                $attendancerecord->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LeaveRequest>
+     */
+    public function getLeaveRequests(): Collection
+    {
+        return $this->leaveRequests;
+    }
+
+    public function addLeaveRequest(LeaveRequest $leaveRequest): static
+    {
+        if (!$this->leaveRequests->contains($leaveRequest)) {
+            $this->leaveRequests->add($leaveRequest);
+            $leaveRequest->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLeaveRequest(LeaveRequest $leaveRequest): static
+    {
+        if ($this->leaveRequests->removeElement($leaveRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($leaveRequest->getEmploye() === $this) {
+                $leaveRequest->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
+
+   
+
+   
+    public function getSalary(): ?float
+    {
+        return $this->salary;
+    }
+
+    public function setSalary(float $salary): static
+    {
+        $this->salary = $salary;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Payroll>
+     */
+    public function getPayrolls(): Collection
+    {
+        return $this->payrolls;
+    }
+
+    public function addPayroll(Payroll $payroll): static
+    {
+        if (!$this->payrolls->contains($payroll)) {
+            $this->payrolls->add($payroll);
+            $payroll->setEmployee($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayroll(Payroll $payroll): static
+    {
+        if ($this->payrolls->removeElement($payroll)) {
+            // set the owning side to null (unless already changed)
+            if ($payroll->getEmployee() === $this) {
+                $payroll->setEmployee(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Score>
+     */
+    public function getScores(): Collection
+    {
+        return $this->scores;
+    }
+
+    public function addScore(Score $score): static
+    {
+        if (!$this->scores->contains($score)) {
+            $this->scores->add($score);
+            $score->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScore(Score $score): static
+    {
+        if ($this->scores->removeElement($score)) {
+            // set the owning side to null (unless already changed)
+            if ($score->getEmploye() === $this) {
+                $score->setEmploye(null);
+            }
+        }
+
+        return $this;
     }
 }

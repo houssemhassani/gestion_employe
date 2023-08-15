@@ -2,22 +2,27 @@
 
 namespace App\Form;
 
-use App\Entity\Attendance;
+use App\Entity\PayRoll;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AttendanceType extends AbstractType
+class PayRollType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-          
+        $builder
+            ->add('createdAt')
+            ->add('numberOfDaysPresent')
+            ->add('primeEvaluationTotal')
+            ->add('TotalSalary')
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Attendance::class,
+            'data_class' => PayRoll::class,
         ]);
     }
 }

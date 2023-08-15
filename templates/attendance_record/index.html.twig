@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AttendanceRecord index{% endblock %}
+
+{% block body %}
+    <h1>AttendanceRecord index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Month</th>
+                <th>Year</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for attendance_record in attendance_records %}
+            <tr>
+                <td>{{ attendance_record.id }}</td>
+                <td>{{ attendance_record.month }}</td>
+                <td>{{ attendance_record.year }}</td>
+                <td>
+                    <a href="{{ path('app_attendance_record_show', {'id': attendance_record.id}) }}">show</a>
+                    <a href="{{ path('app_attendance_record_edit', {'id': attendance_record.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_attendance_record_new') }}">Create new</a>
+{% endblock %}

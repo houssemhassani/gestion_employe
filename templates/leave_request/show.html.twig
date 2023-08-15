@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LeaveRequest{% endblock %}
+
+{% block body %}
+    <h1>LeaveRequest</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ leave_request.id }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ leave_request.createdAt ? leave_request.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>SortedDate</th>
+                <td>{{ leave_request.SortedDate ? leave_request.SortedDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ReturnedDate</th>
+                <td>{{ leave_request.returnedDate ? leave_request.returnedDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>NumberOfDayLeaved</th>
+                <td>{{ leave_request.numberOfDayLeaved }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_leave_request_index') }}">back to list</a>
+
+    <a href="{{ path('app_leave_request_edit', {'id': leave_request.id}) }}">edit</a>
+
+    {{ include('leave_request/_delete_form.html.twig') }}
+{% endblock %}

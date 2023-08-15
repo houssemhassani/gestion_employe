@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\AttendanceRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
 
 #[ORM\Entity(repositoryClass: AttendanceRepository::class)]
 class Attendance
@@ -26,6 +27,9 @@ class Attendance
 
     #[ORM\Column]
     private ?bool $typeOfAttendace = null;
+
+    #[ORM\ManyToOne(inversedBy: 'attendances')]
+    private ?AttendanceRecord $attendanceRecord = null;
 
     public function getId(): ?int
     {
@@ -76,6 +80,18 @@ class Attendance
     public function setTypeOfAttendace(bool $typeOfAttendace): static
     {
         $this->typeOfAttendace = $typeOfAttendace;
+
+        return $this;
+    }
+
+    public function getAttendanceRecord(): ?AttendanceRecord
+    {
+        return $this->attendanceRecord;
+    }
+
+    public function setAttendanceRecord(?AttendanceRecord $attendanceRecord): static
+    {
+        $this->attendanceRecord = $attendanceRecord;
 
         return $this;
     }
