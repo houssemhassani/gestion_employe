@@ -29,6 +29,9 @@ class AttendanceRecord
     #[ORM\ManyToOne(inversedBy: 'attendancerecord')]
     private ?User $user = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $totalOfAdvanceSalary = null;
+
 
 
     public function __construct()
@@ -103,6 +106,18 @@ class AttendanceRecord
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getTotalOfAdvanceSalary(): ?float
+    {
+        return $this->totalOfAdvanceSalary;
+    }
+
+    public function setTotalOfAdvanceSalary(?float $totalOfAdvanceSalary): static
+    {
+        $this->totalOfAdvanceSalary = $totalOfAdvanceSalary;
 
         return $this;
     }

@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SalaryAdvanceController extends AbstractController
 {
     #[Route('/{userId}', name: 'app_salary_advance_index', methods: ['GET'])]
-    public function index(SalaryAdvanceRepository $salaryAdvanceRepository,$userId): Response
+    public function index($userId,SalaryAdvanceRepository $salaryAdvanceRepository): Response
     {
         return $this->render('salary_advance/index.html.twig', [
             'salary_advances' => $salaryAdvanceRepository->findSalaryAdvances($userId),
@@ -24,7 +24,7 @@ class SalaryAdvanceController extends AbstractController
     }
 
     #[Route('/new/{userId}', name: 'app_salary_advance_new', methods: ['GET', 'POST'])]
-    public function new(User $userId,Request $request, EntityManagerInterface $entityManager): Response
+    public function new(User $userId,Request $request, EntityManagerInterface $entityManager,SalaryAdvanceRepository $salaryAdvanceRepository): Response
     {
         $salaryAdvance = new SalaryAdvance();
         $form = $this->createForm(SalaryAdvanceType::class, $salaryAdvance);
@@ -32,8 +32,10 @@ class SalaryAdvanceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $salaryAdvanceRepository->IncrementTotalOfAdvanceInSalary($userId,$salaryAdvance->getAmount());
             $entityManager->persist($salaryAdvance);
             $entityManager->flush();
+
 
             return $this->redirectToRoute('app_salary_advance_index', ['userId'=>$userId], Response::HTTP_SEE_OTHER);
         }
