@@ -29,6 +29,8 @@ class AttendanceRecord
     #[ORM\ManyToOne(inversedBy: 'attendancerecord')]
     private ?User $user = null;
 
+
+
     public function __construct()
     {
         $this->attendancess = new ArrayCollection();
@@ -104,4 +106,6 @@ class AttendanceRecord
 
         return $this;
     }
+
+
 }
