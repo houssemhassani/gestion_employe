@@ -22,4 +22,5 @@ use App\Entity\AttendanceRecord;
     {
         return $payRollRepository->findByEmployeeId($employeeId);
     }
+
  }

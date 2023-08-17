@@ -49,8 +49,5 @@ class AttendanceRecordRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function listOfAttendancesByYearAndMonthAndIdEmploye($id){
-        $user = $userRepository->find(1);
-        
-    }
+
 }

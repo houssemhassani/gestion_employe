@@ -18,12 +18,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class PayRollController extends AbstractController
 {
     #[Route('/pdf/{employeId}', name: 'app_pay_roll_index', methods: ['GET'])]
-    public function index(int $employeId,PayRollService $payRollService,PayRollRepository $payRollRepository,PdfService $pdf): Response
+    public function index(int $employeId,PayRollService $payRollService,PayRollRepository $payRollRepository,PdfService $pdf)
     {
         $html= $this->render('pay_roll/index.html.twig', [
             'payrolls' => $payRollService->getPayRollByEmployeId($employeId, $payRollRepository),
         ]);
-        $pdf->showPdFile($html);
+         $pdf->showPdFile($html);
     }
 
     #[Route('/new', name: 'app_pay_roll_new', methods: ['GET', 'POST'])]
