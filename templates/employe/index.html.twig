@@ -42,6 +42,7 @@
                             <a href="{{ path('app_employe_edit', {'id': user.id}) }}">Edit</a>
                             <a href="{{ path('app_attendance_present', {'id': user.id}) }}">Present</a>
                             <a href="{{ path('app_attendance_absent', {'id': user.id}) }}">Absent</a>
+                            <a href="{{ path('app_salary_advance_index', {'userId': user.id}) }}">SalaryAdvance</a>
                         </td>
                     </tr>
         {% else %}

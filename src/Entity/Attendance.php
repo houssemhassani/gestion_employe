@@ -23,12 +23,12 @@ class Attendance
 
     #[ORM\ManyToOne(inversedBy: 'attendances')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $User = null;
+    private ?User $user = null;
 
     #[ORM\Column]
     private ?bool $typeOfAttendace = null;
 
-    #[ORM\ManyToOne(inversedBy: 'attendances')]
+    #[ORM\ManyToOne(inversedBy: 'attendancess')]
     private ?AttendanceRecord $attendanceRecord = null;
 
     public function getId(): ?int

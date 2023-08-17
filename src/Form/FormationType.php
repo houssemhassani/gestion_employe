@@ -12,11 +12,9 @@ class FormationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('createdAt')
             ->add('startDate')
             ->add('finalDate')
             ->add('adress')
-            ->add('employes')
         ;
     }
 

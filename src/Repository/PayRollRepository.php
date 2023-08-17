@@ -21,6 +21,15 @@ class PayRollRepository extends ServiceEntityRepository
         parent::__construct($registry, PayRoll::class);
     }
 
+    public function findByEmployeeId(int $employeeId): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.employee = :employeeId')
+            ->setParameter('employeeId', $employeeId)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return PayRoll[] Returns an array of PayRoll objects
 //     */

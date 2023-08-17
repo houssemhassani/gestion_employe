@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\AttendanceRecord;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\UserRepository;
 
 /**
  * @extends ServiceEntityRepository<AttendanceRecord>
@@ -16,6 +17,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AttendanceRecordRepository extends ServiceEntityRepository
 {
+
+    
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, AttendanceRecord::class);
@@ -45,4 +48,6 @@ class AttendanceRecordRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
 }

@@ -28,7 +28,7 @@ class Formation
     #[ORM\Column(length: 255)]
     private ?string $adress = null;
 
-    #[ORM\ManyToMany(targetEntity: user::class, inversedBy: 'formations')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'formations')]
     private Collection $employes;
 
     public function __construct()
