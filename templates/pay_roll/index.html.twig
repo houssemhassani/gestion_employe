@@ -1,41 +1,68 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}PayRoll index{% endblock %}
-
-{% block body %}
-    <h1>PayRoll index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>CreatedAt</th>
-                <th>NumberOfDaysPresent</th>
-                <th>PrimeEvaluationTotal</th>
-                <th>TotalSalary</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for pay_roll in pay_rolls %}
-            <tr>
-                <td>{{ pay_roll.id }}</td>
-                <td>{{ pay_roll.createdAt ? pay_roll.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ pay_roll.numberOfDaysPresent }}</td>
-                <td>{{ pay_roll.primeEvaluationTotal }}</td>
-                <td>{{ pay_roll.TotalSalary }}</td>
-                <td>
-                    <a href="{{ path('app_pay_roll_show', {'id': pay_roll.id}) }}">show</a>
-                    <a href="{{ path('app_pay_roll_edit', {'id': pay_roll.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Payslip</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .info {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        .info label {
+            font-weight: bold;
+        }
+        .total {
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Payslip</h1>
+        </div>
+        {% for payroll in payrolls %}
+        <div class="info">
+            <label>Employee:</label>
+            <span>{{ payroll.employee.nom }} {{ payroll.employee.prenom }}</span>
+        </div>
+        <div class="info">
+            <label>Employee CIN:</label>
+            <span>{{ payroll.employee.cin }}</span>
+        </div>
+        <div class="info">
+            <label>Number of Days Present:</label>
+            <span>{{ payroll.numberOfDaysPresent }}</span>
+        </div>
+        <div class="info">
+            <label>Prime Evaluation Total:</label>
+            <span>{{ payroll.primeEvaluationTotal }}</span>
+        </div>
+        <div class="total">
+            Total Salary: {{ payroll.TotalSalary +  payroll.primeEvaluationTotal}}  USD
+        </div>
         {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_pay_roll_new') }}">Create new</a>
-{% endblock %}
+    </div>
+</body>
+</html>

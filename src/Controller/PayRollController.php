@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+
+use App\Service\PdfService;
 use App\Entity\PayRoll;
 use App\Form\PayRollType;
-use App\Repository\PayRollRepository;
+USE App\Repository\PayRollRepository;
+use App\Service\PayRollService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,12 +17,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/pay/roll')]
 class PayRollController extends AbstractController
 {
-    #[Route('/', name: 'app_pay_roll_index', methods: ['GET'])]
-    public function index(PayRollRepository $payRollRepository): Response
+    #[Route('/pdf/{employeId}', name: 'app_pay_roll_index', methods: ['GET'])]
+    public function index(int $employeId,PayRollService $payRollService,PayRollRepository $payRollRepository,PdfService $pdf): Response
     {
-        return $this->render('pay_roll/index.html.twig', [
-            'pay_rolls' => $payRollRepository->findAll(),
+        $html= $this->render('pay_roll/index.html.twig', [
+            'payrolls' => $payRollService->getPayRollByEmployeId($employeId, $payRollRepository),
         ]);
+        $pdf->showPdFile($html);
     }
 
     #[Route('/new', name: 'app_pay_roll_new', methods: ['GET', 'POST'])]
