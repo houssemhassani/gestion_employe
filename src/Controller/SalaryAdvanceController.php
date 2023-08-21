@@ -32,9 +32,13 @@ class SalaryAdvanceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $salaryAdvanceRepository->IncrementTotalOfAdvanceInSalary($userId,$salaryAdvance->getAmount());
-            $entityManager->persist($salaryAdvance);
-            $entityManager->flush();
+            if($salaryAdvance->getAmount()<=$salaryAdvanceRepository->maxAdvanceSalaryByEmployeIdAndMonth($userId))
+            {
+                $salaryAdvanceRepository->IncrementTotalOfAdvanceInSalary($userId,$salaryAdvance->getAmount());
+                $entityManager->persist($salaryAdvance);
+                $entityManager->flush();
+            }
+
 
 
             return $this->redirectToRoute('app_salary_advance_index', ['userId'=>$userId], Response::HTTP_SEE_OTHER);

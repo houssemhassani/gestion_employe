@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\AttendanceRecord;
 use App\Entity\SalaryAdvance;
+use App\Repository\UserRepository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManager;
@@ -22,15 +23,17 @@ class SalaryAdvanceRepository extends ServiceEntityRepository
 {
     private UserRepository $userRpository;
     private EntityManagerInterface $entityManager;
+    private AttendanceRepository $attendanceRepository;
     private AttendanceRecordRepository $attendanceRecordRepository;
 
-    public function __construct(ManagerRegistry $registry,EntityManagerInterface $entityManager,UserRepository $userRepository,AttendanceRecordRepository $attendanceRecordRepository)
+    public function __construct(AttendanceRepository $attendanceRepository,ManagerRegistry $registry,EntityManagerInterface $entityManager,UserRepository $userRepository,AttendanceRecordRepository $attendanceRecordRepository)
     {
 
         parent::__construct($registry, SalaryAdvance::class);
         $this->userRpository=$userRepository;
         $this->entityManager=$entityManager;
         $this->attendanceRecordRepository=$attendanceRecordRepository;
+        $this->attendanceRepository=$attendanceRepository;
     }
 
     /**
@@ -85,6 +88,21 @@ class SalaryAdvanceRepository extends ServiceEntityRepository
 
         }
 
+    }
+    public function maxAdvanceSalaryByEmployeIdAndMonth(User $user): ?float{
+
+        $nbr=$this->attendanceRepository->findAttendancesByEmployeId($user->getId(),8,2023)+1;
+        echo($nbr);
+        echo("\t salary ".$user->getSalary()."   ");
+        $sal=$user->getSalary();
+        //$totalSalary=$user->getSalary() * $nbr;
+        $totalSalary=0;
+        $attendanceRecord=new AttendanceRecord();
+
+        $attendanceRecord=$this->attendanceRecordRepository->findOneBySomeField($user->getId(),8,2023);
+        dd($attendanceRecord);
+        echo($attendanceRecord->getTotalOfAdvanceSalary());
+        return ($sal * $nbr)- $attendanceRecord->getTotalOfAdvanceSalary();
     }
 
 //    public function findOneBySomeField($value): ?SalaryAdvance

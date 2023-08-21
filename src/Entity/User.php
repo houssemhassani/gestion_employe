@@ -348,7 +348,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
    
 
-   
+
     public function getSalary(): ?float
     {
         return $this->salary;

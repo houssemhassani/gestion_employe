@@ -39,15 +39,19 @@ class AttendanceRecordRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?AttendanceRecord
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findOneBySomeField($value,$month,$year): ?AttendanceRecord
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.user = :val')
+            ->andWhere('a.month = :month')
+            ->andWhere('a.year = :year')
+            ->setParameter('month',$month)
+            ->setParameter('year',$year)
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 
 
 }
