@@ -89,9 +89,10 @@ class SalaryAdvanceRepository extends ServiceEntityRepository
         }
 
     }
-    public function maxAdvanceSalaryByEmployeIdAndMonth(User $user): ?float{
-
-        $nbr=$this->attendanceRepository->findAttendancesByEmployeId($user->getId(),8,2023)+1;
+    public function maxAdvanceSalaryByEmployeIdAndMonth($id): ?float{
+        $user=new User();
+        $user=$this->userRpository->find($id);
+        $nbr=$this->attendanceRepository->findAttendancesByEmployeId($id,8,2023)+1;
         echo($nbr);
         echo("\t salary ".$user->getSalary()."   ");
         $sal=$user->getSalary();
@@ -99,8 +100,8 @@ class SalaryAdvanceRepository extends ServiceEntityRepository
         $totalSalary=0;
         $attendanceRecord=new AttendanceRecord();
 
-        $attendanceRecord=$this->attendanceRecordRepository->findOneBySomeField($user->getId(),8,2023);
-        dd($attendanceRecord);
+        $attendanceRecord=$this->attendanceRecordRepository->findOneBySomeField($id,8,2023);
+        //dd($attendanceRecord);
         echo($attendanceRecord->getTotalOfAdvanceSalary());
         return ($sal * $nbr)- $attendanceRecord->getTotalOfAdvanceSalary();
     }

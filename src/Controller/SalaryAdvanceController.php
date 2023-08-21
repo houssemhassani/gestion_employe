@@ -23,18 +23,20 @@ class SalaryAdvanceController extends AbstractController
         ]);
     }
 
-    #[Route('/new/{userId}', name: 'app_salary_advance_new', methods: ['GET', 'POST'])]
-    public function new(User $userId,Request $request, EntityManagerInterface $entityManager,SalaryAdvanceRepository $salaryAdvanceRepository): Response
+    #[Route('/new/{user}', name: 'app_salary_advance_new', methods: ['GET', 'POST'])]
+    public function new(User $user,Request $request, EntityManagerInterface $entityManager,SalaryAdvanceRepository $salaryAdvanceRepository): Response
     {
+       // dd($user->getId());
+        $userId=$user->getId();
         $salaryAdvance = new SalaryAdvance();
         $form = $this->createForm(SalaryAdvanceType::class, $salaryAdvance);
-        $salaryAdvance->setEmploye($userId);
+        $salaryAdvance->setEmploye($user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             if($salaryAdvance->getAmount()<=$salaryAdvanceRepository->maxAdvanceSalaryByEmployeIdAndMonth($userId))
             {
-                $salaryAdvanceRepository->IncrementTotalOfAdvanceInSalary($userId,$salaryAdvance->getAmount());
+                $salaryAdvanceRepository->IncrementTotalOfAdvanceInSalary($user,$salaryAdvance->getAmount());
                 $entityManager->persist($salaryAdvance);
                 $entityManager->flush();
             }
