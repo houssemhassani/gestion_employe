@@ -90,7 +90,6 @@ class SalaryAdvanceRepository extends ServiceEntityRepository
 
     }
     public function maxAdvanceSalaryByEmployeIdAndMonth($id): ?float{
-        $user=new User();
         $user=$this->userRpository->find($id);
         $nbr=$this->attendanceRepository->findAttendancesByEmployeId($id,8,2023)+1;
         echo($nbr);

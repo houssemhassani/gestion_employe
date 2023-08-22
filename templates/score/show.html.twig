@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Score{% endblock %}
+
+{% block body %}
+    <h1>Score</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ score.id }}</td>
+            </tr>
+            <tr>
+                <th>ScoreEvaluation</th>
+                <td>{{ score.scoreEvaluation }}</td>
+            </tr>
+            <tr>
+                <th>CommentEvaluation</th>
+                <td>{{ score.commentEvaluation }}</td>
+            </tr>
+            <tr>
+                <th>Created_At</th>
+                <td>{{ score.createdAt ? score.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Month</th>
+                <td>{{ score.month }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_score_index') }}">back to list</a>
+
+    <a href="{{ path('app_score_edit', {'id': score.id}) }}">edit</a>
+
+    {{ include('score/_delete_form.html.twig') }}
+{% endblock %}

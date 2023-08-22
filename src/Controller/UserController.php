@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Service\PdfService;
+use Symfony\Component\Security\Core\Security;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,9 +17,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/employe', name: 'app_employe_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository,Security $security): Response
     {
+        $today = new \DateTime();
+        $isGRH = $security->isGranted('ROLE_GRH');
+        $showButton = $isGRH && $today->format('m-d') === '08-22';
         return $this->render('employe/index.html.twig', [
+            'showButton' => $showButton,
             'users' => $userRepository->findAll(),
         ]);
     }
@@ -26,6 +31,7 @@ class UserController extends AbstractController
     public function indexGrh(UserRepository $userRepository): Response
     {
         return $this->render('grh/index.html.twig', [
+
             'users' => $userRepository->findAll(),
         ]);
     }

@@ -1,0 +1,16 @@
+{# templates/evaluation/evaluate_employee.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h1>Evaluate Employee</h1>
+
+    <h2>{{ employee.nom }} {{ employee.prenom }}</h2>
+
+    {{ form_start(form) }}
+    {{ form_row(form.scoreEvaluation) }}
+    {{ form_row(form.commentEvaluation) }}
+
+    <button type="submit">Submit</button>
+    {{ form_end(form) }}
+{% endblock %}

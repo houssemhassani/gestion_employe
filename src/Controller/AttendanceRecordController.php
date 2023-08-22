@@ -48,25 +48,25 @@ class AttendanceRecordController extends AbstractController
     }
 
     #[Route('/getAllAttendanceByEmployee/{id}', name: 'app_all_attendance_record_show', methods: ['GET'])]
-    public function getAllAttendanceByEmploye(User $user,UserRepository $userRepository,PdfService $pdf): Response
+    public function getAllAttendanceByEmploye(User $user, UserRepository $userRepository, PdfService $pdf)
     {
-        
-        $attendanceRecord=new AttendanceRecord();
-        $user=$userRepository->find($user->getId());
+
+        $attendanceRecord = new AttendanceRecord();
+        $user = $userRepository->find($user->getId());
         if (!$user instanceof User) {
             throw $this->createNotFoundException('User not found.');
         }
 
         // Récupérer l'AttendanceRecord pour l'année 2023 et le mois 08
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         $attendanceRecord = $entityManager->getRepository(AttendanceRecord::class)
             ->findOneBy([
                 'user' => $user,
                 'year' => 2023,
                 'month' => 8
             ]);
-            
+
 
         // Vérifier si l'AttendanceRecord existe
         if (!$attendanceRecord instanceof AttendanceRecord) {
@@ -75,12 +75,13 @@ class AttendanceRecordController extends AbstractController
 
         // Récupérer la liste des attendances associées à cet AttendanceRecord
         $attendances = $attendanceRecord->getAttendancess();
-        $html=$this->render('attendance_record/index.html.twig',['attendances'=>$attendances,'employe'=>$user],);
+        $html = $this->render('attendance_record/index.html.twig', ['attendances' => $attendances, 'employe' => $user],);
         $pdf->showPdFile($html);
         /* return $this->render('attendace_record/index.html.twig', [
             'user' => $user,
         ]); */
     }
+
 
 
     #[Route('/{id}', name: 'app_attendance_record_show', methods: ['GET'])]
