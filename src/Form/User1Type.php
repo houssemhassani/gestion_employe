@@ -26,6 +26,7 @@ class User1Type extends AbstractType
                 ],
                 'label' => "Email"
             ])
+            ->add('salary')
             ->add('password', PasswordType::class, [
                 'attr' => [
                     "class" => "h-full-width"

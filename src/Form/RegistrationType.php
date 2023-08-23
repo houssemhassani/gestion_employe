@@ -33,6 +33,7 @@ class RegistrationType extends AbstractType
             ->add('cin')
             
             ->add('nom')
+            ->add('salary')
             ->add('prenom')
             ->add('numTel')
         ;

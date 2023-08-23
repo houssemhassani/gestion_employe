@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Service\SendMailService;
 use App\Service\PdfService;
 use Symfony\Component\Security\Core\Security;
+use App\Form\ContactType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,21 +41,26 @@ class UserController extends AbstractController
     #[Route('/newEmploye', name: 'app_employe_new', methods: ['GET', 'POST'])]
     public function newEmploye(Request $request, EntityManagerInterface $entityManager): Response
     {
+
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
+        //$form2 = $this->createForm(ContactType::class);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+
+
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_employe_index', [], Response::HTTP_SEE_OTHER);
-        }
 
-        return $this->renderForm('employe/new.html.twig', [
+
+            return $this->redirectToRoute('app_employe_index', [], Response::HTTP_SEE_OTHER);
+
+
+       /* return $this->renderForm('employe/new.html.twig', [
             'user' => $user,
             'form' => $form,
-        ]);
+        ]);*/
     }
     #[Route('/newGrh', name: 'app_grh_new', methods: ['GET', 'POST'])]
     public function newGRH(Request $request, EntityManagerInterface $entityManager): Response
