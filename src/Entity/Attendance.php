@@ -22,13 +22,13 @@ class Attendance
     private ?\DateTimeInterface $UpdateAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'attendances')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $User = null;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $user = null;
 
     #[ORM\Column]
     private ?bool $typeOfAttendace = null;
 
-    #[ORM\ManyToOne(inversedBy: 'attendances')]
+    #[ORM\ManyToOne(inversedBy: 'attendancess')]
     private ?AttendanceRecord $attendanceRecord = null;
 
     public function getId(): ?int
@@ -62,12 +62,12 @@ class Attendance
 
     public function getUser(): ?User
     {
-        return $this->User;
+        return $this->user;
     }
 
     public function setUser(?User $User): static
     {
-        $this->User = $User;
+        $this->user = $User;
 
         return $this;
     }

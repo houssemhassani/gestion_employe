@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Service\SendMailService;
 use App\Form\RegistrationType;
 use App\Repository\UserRepository;
 use App\Service\Mailer;
@@ -35,7 +36,7 @@ class RegistrationController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function register(Request $request): Response
+    public function register(SendMailService $mail,Request $request): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
@@ -49,6 +50,15 @@ class RegistrationController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            $context=[ 'sujet' => "Anypli Management User",
+                'mail' => $user->getEmail(),
+                'message' => "Bienvenue dans notre application Voiçi votre données : \n 
+                                Mail : ". $user->getEmail()." \n 
+                                Mot De Passe : ".$user->getPassword()." \n Vous pouvez accéder à notre application"
+            ];
+            $mail->send($user->getEmail(), 'Contact du Anypli Management "', $context);
+            //dd($mail);
+            $this->addFlash('message', 'Votre e-mail a bien été envoyé');
             /* $this->mailer->sendEmail($user->getEmail(), $user->getToken());
             $this->addFlash("success", "Inscription réussie !"); */
         }

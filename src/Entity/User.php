@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
+use App\{Repository\UserRepository};
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -75,6 +75,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'employe', targetEntity: Score::class)]
     private Collection $scores;
 
+    #[ORM\OneToMany(mappedBy: 'employe', targetEntity: SalaryAdvance::class)]
+    private Collection $salaryAdvances;
+
     public function __construct()
     {
         $this->roles = ['EMPLOYE'];
@@ -85,6 +88,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->leaveRequests = new ArrayCollection();
         $this->payrolls = new ArrayCollection();
         $this->scores = new ArrayCollection();
+        $this->salaryAdvances = new ArrayCollection();
        
     }
 
@@ -344,7 +348,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
    
 
-   
+
     public function getSalary(): ?float
     {
         return $this->salary;
@@ -416,4 +420,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, SalaryAdvance>
+     */
+    public function getSalaryAdvances(): Collection
+    {
+        return $this->salaryAdvances;
+    }
+
+    public function addSalaryAdvance(SalaryAdvance $salaryAdvance): static
+    {
+        if (!$this->salaryAdvances->contains($salaryAdvance)) {
+            $this->salaryAdvances->add($salaryAdvance);
+            $salaryAdvance->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalaryAdvance(SalaryAdvance $salaryAdvance): static
+    {
+        if ($this->salaryAdvances->removeElement($salaryAdvance)) {
+            // set the owning side to null (unless already changed)
+            if ($salaryAdvance->getEmploye() === $this) {
+                $salaryAdvance->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

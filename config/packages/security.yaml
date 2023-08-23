@@ -1,4 +1,9 @@
 security:
+    role_hierarchy:
+        ROLE_GRH: [ GRH ]
+        ROLE_ADMIN: [ Admin ]
+        ROLE_EMPLOYE: [ EMPLOYE ]
+        ROLE_RESP_FINANCIER: [ Resp_Financier ]
     enable_authenticator_manager: true
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
