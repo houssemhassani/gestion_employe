@@ -1,16 +1,14 @@
-{# templates/evaluation/evaluate_employee.html.twig #}
+{% extends 'template.html.twig' %}
 
-{% extends 'base.html.twig' %}
+{% block title %}New User{% endblock %}
 
-{% block content %}
-    <h1>Evaluate Employee</h1>
+{% block body %}
+    <h1>Create new User</h1>
 
-    <h2>{{ employee.nom }} {{ employee.prenom }}</h2>
+    <div class="box-footer">
+        <button type="submit" class="btn btn-info pull-right"><a href="{{ path('app_employe_index') }}">back to list</a></button>
+    </div>
+    {{ include('score/_form.html.twig') }}
 
-    {{ form_start(form) }}
-    {{ form_row(form.scoreEvaluation) }}
-    {{ form_row(form.commentEvaluation) }}
 
-    <button type="submit">Submit</button>
-    {{ form_end(form) }}
 {% endblock %}

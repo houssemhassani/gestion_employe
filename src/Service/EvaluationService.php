@@ -14,13 +14,11 @@ use Doctrine\ORM\EntityManagerInterface;
         $this->entityManager = $entityManager;
     }
 
-    public function evaluateEmployee(User $employee, float $score, string $comment): void
+    public function evaluateEmployee(User $employee, Score $score): void
     {
-        $evaluation = new Score();
-        $evaluation->setScoreEvaluation($score);
-        $evaluation->setCommentEvaluation($comment);
-        $evaluation->setEmployee($employee);
-        $this->entityManager->persist($evaluation);
+
+        $score->setEmploye($employee);
+        $this->entityManager->persist($score);
         $this->entityManager->flush();
     }
 }

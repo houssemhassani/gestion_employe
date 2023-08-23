@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ScoreType;
+use App\Entity\Score;
 use App\Service\EvaluationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,24 +29,23 @@ class ScoreController extends AbstractController
     public function evaluateEmployee(Request $request, User $employee): Response
     {
         // Fetch the employee using $employeeId
+        $score=new Score();
 
-
-
-        $form = $this->createForm(ScoreType::class);
+        $form = $this->createForm(ScoreType::class,$score);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $scoreData = $form->getData();
-            dd($employee);
+
+
             // Use the EvaluationService to evaluate the employee
-            $this->evaluationService->evaluateEmployee($employee, $scoreData['scoreEvaluation'], $scoreData['commentEvaluation']);
+            $this->evaluationService->evaluateEmployee($employee,$score);
 
             $this->addFlash('success', 'Employee evaluation saved successfully.');
 
             // Redirect to a success page or do something else
-            return $this->redirectToRoute('success_route');
+            return $this->redirectToRoute('app_employe_index');
         }
 
         return $this->render('score/new.html.twig', [
