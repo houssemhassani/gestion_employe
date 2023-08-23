@@ -1,41 +1,45 @@
-{% extends 'base.html.twig' %}
+{% extends 'template.html.twig' %}
 
-{% block title %}Score index{% endblock %}
+{% block title %}Employe index{% endblock %}
 
 {% block body %}
-    <h1>Score index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>ScoreEvaluation</th>
-                <th>CommentEvaluation</th>
-                <th>Created_At</th>
-                <th>Month</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for score in scores %}
-            <tr>
-                <td>{{ score.id }}</td>
-                <td>{{ score.scoreEvaluation }}</td>
-                <td>{{ score.commentEvaluation }}</td>
-                <td>{{ score.createdAt ? score.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ score.month }}</td>
-                <td>
-                    <a href="{{ path('app_score_show', {'id': score.id}) }}">show</a>
-                    <a href="{{ path('app_score_edit', {'id': score.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-    <a href="{{ path('app_score_new') }}">Create new</a>
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">List of Scores for {{ employee.Nom }} {{ employee.Prenom }}</h3>
+            </div>
+            <div class="box-body">
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>Score Evaluation</th>
+                        <th>Comment Evaluation</th>
+                        <th>CreatedAt</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for score in scores %}
+                        <tr>
+                            <td>{{ score.scoreEvaluation }}</td>
+                            <td>{{ score.commentEvaluation }}</td>
+                            <td>{{ score.createdAt ? score.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="11">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
 {% endblock %}
