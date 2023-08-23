@@ -16,20 +16,27 @@ class AttendanceRecord
     private ?int $id = null;
 
     #[ORM\OneToMany(mappedBy: 'attendanceRecord', targetEntity: Attendance::class)]
-    private Collection $attendances;
+    private Collection $attendancess;
 
-    #[ORM\Column(length: 150)]
-    private ?string $month = null;
+    #[ORM\Column]
+    private ?int $month = null;
 
     #[ORM\Column]
     private ?int $year = null;
+    #[ORM\Column(nullable:true)]
+    private ?float $extraHours;
 
     #[ORM\ManyToOne(inversedBy: 'attendancerecord')]
     private ?User $user = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $totalOfAdvanceSalary = null;
+
+
+
     public function __construct()
     {
-        $this->attendances = new ArrayCollection();
+        $this->attendancess = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -40,15 +47,15 @@ class AttendanceRecord
     /**
      * @return Collection<int, Attendance>
      */
-    public function getAttendances(): Collection
+    public function getAttendancess(): Collection
     {
-        return $this->attendances;
+        return $this->attendancess;
     }
 
     public function addAttendance(attendance $attendance): static
     {
-        if (!$this->attendances->contains($attendance)) {
-            $this->attendances->add($attendance);
+        if (!$this->attendancess->contains($attendance)) {
+            $this->attendancess->add($attendance);
             $attendance->setAttendanceRecord($this);
         }
 
@@ -57,7 +64,7 @@ class AttendanceRecord
 
     public function removeAttendance(attendance $attendance): static
     {
-        if ($this->attendances->removeElement($attendance)) {
+        if ($this->attendancess->removeElement($attendance)) {
             // set the owning side to null (unless already changed)
             if ($attendance->getAttendanceRecord() === $this) {
                 $attendance->setAttendanceRecord(null);
@@ -102,4 +109,18 @@ class AttendanceRecord
 
         return $this;
     }
+
+    public function getTotalOfAdvanceSalary(): ?float
+    {
+        return $this->totalOfAdvanceSalary;
+    }
+
+    public function setTotalOfAdvanceSalary(?float $totalOfAdvanceSalary): static
+    {
+        $this->totalOfAdvanceSalary = $totalOfAdvanceSalary;
+
+        return $this;
+    }
+
+
 }

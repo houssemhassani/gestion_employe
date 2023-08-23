@@ -1,11 +1,18 @@
+{# templates/formation/create.html.twig #}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}New Formation{% endblock %}
-
 {% block body %}
-    <h1>Create new Formation</h1>
+    <h1>Create Formation</h1>
 
-    {{ include('formation/_form.html.twig') }}
-
-    <a href="{{ path('app_formation_index') }}">back to list</a>
+    {{ form_start(form) }}
+    {{ form_row(form.startDate) }}
+    {{ form_row(form.finalDate) }}
+    {{ form_row(form.adress) }}
+    {{ form_row(form.employes) }}
+    <div class="form-group">
+        {{ form_widget(form.submit) }}
+        {{ form_widget(form.reset) }}
+    </div>
+    {{ form_end(form) }}
 {% endblock %}

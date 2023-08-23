@@ -1,0 +1,14 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}New User{% endblock %}
+
+{% block body %}
+    <h1>Create new User</h1>
+
+    <div class="box-footer">
+        <button type="submit" class="btn btn-info pull-right"><a href="{{ path('app_employe_index') }}">back to list</a></button>
+    </div>
+    {{ include('score/_form.html.twig') }}
+
+
+{% endblock %}

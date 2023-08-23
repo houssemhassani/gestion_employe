@@ -27,17 +27,18 @@ class AttendanceController extends AbstractController
     #[Route('/present/{id}', name: 'app_attendance_present', methods: ['GET', 'POST'])]
     public function present(Request $request, EntityManagerInterface $entityManager,UserRepository $userRepository,$id): Response
     {
-        $user=new User();
-        $user=$userRepository->findOneBy(['id'=>$id]);
+        echo($id);
+        $user=$userRepository->findEmployeById($id);
+        echo($user->getNom());
         $attendance = new Attendance();
-        $attendance->setUser($user);
+
         $attendance->setTypeOfAttendace(true);
         $attendance->setCreatedAt(new \DateTime());
         $form = $this->createForm(AttendanceType::class, $attendance);
         $form->handleRequest($request);
-       
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
+            $attendance->setUser($user);
             $entityManager->persist($attendance);
             $entityManager->flush();
 

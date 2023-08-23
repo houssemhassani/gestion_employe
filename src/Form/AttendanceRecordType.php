@@ -14,7 +14,6 @@ class AttendanceRecordType extends AbstractType
         $builder
             ->add('month')
             ->add('year')
-            ->add('user')
         ;
     }
 
