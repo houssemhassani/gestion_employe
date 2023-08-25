@@ -1,7 +1,7 @@
 security:
     role_hierarchy:
         ROLE_GRH: [ GRH ]
-        ROLE_ADMIN: [ Admin ]
+        ROLE_ADMIN: [ ADMIN ]
         ROLE_EMPLOYE: [ EMPLOYE ]
         ROLE_RESP_FINANCIER: [ Resp_Financier ]
     enable_authenticator_manager: true

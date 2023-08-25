@@ -50,6 +50,7 @@ class AttendanceController extends AbstractController
             'form' => $form,
         ]);
     }
+
     #[Route('/absent/{id}', name: 'app_attendance_absent', methods: ['GET', 'POST'])]
     public function absent(Request $request, EntityManagerInterface $entityManager,UserRepository $userRepository,$id): Response
     {
