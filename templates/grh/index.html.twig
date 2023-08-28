@@ -1,6 +1,6 @@
 {% extends 'template.html.twig' %}
 
-{% block title %}Employe index{% endblock %}
+{% block title %}HR Manager index{% endblock %}
 
 {% block body %}
 
@@ -8,11 +8,11 @@
     <div class="col-xs-12">
           <div class="box">
              <div class="box-header">
-                <h3 class="box-title">List of Employe</h3>
+                <h3 class="box-title">List of HR Manager</h3>
              </div>
              <div class="box-body">
              <div class="box-footer">
-                <button type="submit" class="btn btn-info pull-right"><a href="{{ path('app_g_r_h_new') }}">New Humain Management</a></button>
+                <button type="submit" class="btn btn-info pull-right"><a href="{{ path('app_g_r_h_new') }}">New HR Management</a></button>
               </div>
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
@@ -30,7 +30,7 @@
                 </thead>
                 <tbody>
                     {% for user in users %}
-                        {% if user.roles[0]=='EMPLOYE' %}
+                        {% if user.roles[0]=='GRH' %}
                     <tr>
                         <td>{{ user.nom }}</td>
                         <td>{{ user.prenom }}</td>
@@ -42,6 +42,7 @@
                         <td>
                             <a href="{{ path('app_employe_show', {'id': user.id}) }}">show</a>
                             <a href="{{ path('app_g_r_h_edit', {'id': user.id}) }}">edit</a>
+
                         </td>
                     </tr>
                     {% endif %}

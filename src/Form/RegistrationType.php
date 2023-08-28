@@ -20,7 +20,7 @@ class RegistrationType extends AbstractType
             ->add('email', EmailType::class, [
                 'attr' => [
                     'class' => 'h-full-width',
-                    "placeholder" => "Emain de confirmation vous sera envoyer"
+                    "placeholder" => "Email de confirmation vous sera envoyer"
                 ],
                 'label' => "Email"
             ])
@@ -33,8 +33,10 @@ class RegistrationType extends AbstractType
             ->add('cin')
             
             ->add('nom')
+            ->add('salary')
             ->add('prenom')
             ->add('numTel')
+            ->add('salary')
         ;
     }
 

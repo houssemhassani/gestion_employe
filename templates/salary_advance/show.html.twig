@@ -1,0 +1,29 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}SalaryAdvance{% endblock %}
+
+{% block body %}
+    <h1>SalaryAdvance</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ salary_advance.id }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ salary_advance.CreatedAt ? salary_advance.CreatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>{{ salary_advance.amount }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <a href="{{ path('app_salary_advance_edit', {'id': salary_advance.id}) }}">edit</a>
+
+    {{ include('salary_advance/_delete_form.html.twig') }}
+{% endblock %}

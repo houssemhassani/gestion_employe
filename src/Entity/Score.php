@@ -22,8 +22,7 @@ class Score
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $created_At = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $month = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'scores')]
     private ?User $employe = null;
@@ -69,17 +68,9 @@ class Score
         return $this;
     }
 
-    public function getMonth(): ?string
-    {
-        return $this->month;
-    }
 
-    public function setMonth(string $month): static
-    {
-        $this->month = $month;
 
-        return $this;
-    }
+
 
     public function getEmploye(): ?User
     {

@@ -1,0 +1,12 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}Edit SalaryAdvance{% endblock %}
+
+{% block body %}
+    <h1>Edit SalaryAdvance</h1>
+
+    {{ include('salary_advance/_form.html.twig', {'button_label': 'Update'}) }}
+
+
+    {{ include('salary_advance/_delete_form.html.twig') }}
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\AttendanceRecord;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\UserRepository;
 
 /**
  * @extends ServiceEntityRepository<AttendanceRecord>
@@ -16,6 +17,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AttendanceRecordRepository extends ServiceEntityRepository
 {
+
+    
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, AttendanceRecord::class);
@@ -36,13 +39,19 @@ class AttendanceRecordRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?AttendanceRecord
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findOneBySomeField($value,$month,$year): ?AttendanceRecord
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.user = :val')
+            ->andWhere('a.month = :month')
+            ->andWhere('a.year = :year')
+            ->setParameter('month',$month)
+            ->setParameter('year',$year)
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+
 }

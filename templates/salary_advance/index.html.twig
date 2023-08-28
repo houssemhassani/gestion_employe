@@ -1,0 +1,36 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}SalaryAdvance index{% endblock %}
+
+{% block body %}
+    <h1>SalaryAdvance index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>CreatedAt</th>
+                <th>Amount</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for salary_advance in salary_advances %}
+            <tr>
+                <td>{{ salary_advance.id }}</td>
+                <td>{{ salary_advance.CreatedAt ? salary_advance.CreatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ salary_advance.amount }}</td>
+                <td>
+                    <a href="{{ path('app_salary_advance_show', {'id': salary_advance.id}) }}">show</a>
+                    <a href="{{ path('app_salary_advance_edit', {'id': salary_advance.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

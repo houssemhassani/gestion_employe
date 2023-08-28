@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Service\SendEmail;
+use App\Service\SendMailService;
 use App\Form\RegistrationType;
 use App\Repository\UserRepository;
 use App\Service\Mailer;
@@ -49,8 +51,24 @@ class RegistrationController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            /* $this->mailer->sendEmail($user->getEmail(), $user->getToken());
-            $this->addFlash("success", "Inscription réussie !"); */
+
+            /*$sendEmail->send(
+                [
+                    'recipient_email'=>$user->getEmail(),
+                    'subject'=>"Vrification de votre adresse ",
+                    'html_template'=>'registration/register_config_email.html.twig',
+                    'context'=>[
+                        'userId'=>$user->getId(),
+                        'registrationToken'=>$user->getToken(),
+                        'emaill'=>$user->getEmail(),
+                        'password'=>$user->getPassword()
+                    ]
+                ]
+            );
+
+            $this->addFlash('message', 'Votre e-mail a bien été envoyé');*/
+            /* $this->mailer->sendEmail($user->getEmail(), $user->getToken());*/
+            $this->addFlash("success", "Inscription réussie !");
         }
 
         return $this->render('registration/register.html.twig', [
