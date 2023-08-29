@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Attendance;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -41,6 +42,23 @@ class AttendanceRepository extends ServiceEntityRepository
             ->getResult();
         return count($list);
 
+    }
+    public function getAllAttendancesByCurrentUserAndCurrentMonth(User $currentUser, \DateTimeInterface $date): array
+    {
+        $startOfMonth = clone $date;
+        $startOfMonth->modify('first day of this month');
+        $endOfMonth = clone $date;
+        $endOfMonth->modify('last day of this month');
+
+        $qb = $this->createQueryBuilder('a')
+            ->andWhere('a.user = :currentUser')
+            ->setParameter('currentUser', $currentUser)
+            ->andWhere('a.CreatedAt BETWEEN :startOfMonth AND :endOfMonth')
+            ->setParameter('startOfMonth', $startOfMonth)
+            ->setParameter('endOfMonth', $endOfMonth)
+            ->orderBy('a.CreatedAt', 'DESC'); // You can order the attendances as needed
+
+        return $qb->getQuery()->getResult();
     }
 
     public function findOneBySomeField($value): ?Attendance

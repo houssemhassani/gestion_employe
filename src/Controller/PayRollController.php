@@ -13,17 +13,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/pay/roll')]
 class PayRollController extends AbstractController
 {
     #[Route('/pdf/{employeId}', name: 'app_pay_roll_index', methods: ['GET'])]
-    public function index(int $employeId,PayRollService $payRollService,PayRollRepository $payRollRepository,PdfService $pdf)
+    public function index(Security $security,int $employeId,PayRollService $payRollService,PayRollRepository $payRollRepository,PdfService $pdf)
     {
-        $html= $this->render('pay_roll/index.html.twig', [
-            'payrolls' => $payRollService->getPayRollByEmployeId($employeId, $payRollRepository),
-        ]);
-         $pdf->showPdFile($html);
+        if ($security->getUser()->getRoles() == ["Resp_Financier"]) {
+
+            $html = $this->render('pay_roll/index.html.twig', [
+                'payrolls' => $payRollService->getPayRollByEmployeId($employeId, $payRollRepository),
+            ]);
+            $pdf->showPdFile($html);
+        }
+        else
+            return $this->render('error_modal.html.twig');
     }
 
     #[Route('/new', name: 'app_pay_roll_new', methods: ['GET', 'POST'])]

@@ -25,8 +25,11 @@
                 <td>{{ leave_request.returnedDate ? leave_request.returnedDate|date('Y-m-d') : '' }}</td>
                 <td>{{ leave_request.numberOfDayLeaved }}</td>
                 <td>
+                    {% if showButton %}
+                        <a href="{{ path('app_leave_request_accept', {'id': leave_request.id}) }}">accept</a>
+                        <a href="{{ path('app_leave_request_refuse', {'id': leave_request.id}) }}">refuse</a>
+                    {% endif %}
                     <a href="{{ path('app_leave_request_show', {'id': leave_request.id}) }}">show</a>
-                    <a href="{{ path('app_leave_request_edit', {'id': leave_request.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

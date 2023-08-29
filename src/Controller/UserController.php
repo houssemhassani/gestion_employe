@@ -66,8 +66,7 @@ class UserController extends AbstractController
     #[Route('/grh', name: 'app_grh_index', methods: ['GET'])]
     public function indexGrh(UserRepository $userRepository,Security $security): Response
     {
-        if( $security->getUser()->getRoles()==["ADMIN"]
-            || $security->getUser()->getRoles()==["Resp_Financier"]){
+        if( $security->getUser()->getRoles()==["ADMIN"]){
         $users=$userRepository->findAll();
         return $this->render('grh/index.html.twig', [
 
@@ -77,162 +76,166 @@ class UserController extends AbstractController
             return $this->render('error_modal.html.twig');
     }
 
-
     #[Route('/newEmploye', name: 'app_employe_new', methods: ['GET', 'POST'])]
-    public function newEmploye(Request $request, EntityManagerInterface $entityManager): Response
+    public function newEmploye(Request $request, EntityManagerInterface $entityManager,Security $security): Response
     {
+        if($security->getUser()->getRoles()==["GRH"] ){
+            $user = new User();
+            $user->setRoles(["EMPLOYE"]);
+            $form = $this->createForm(UserType::class, $user);
+            $form->handleRequest($request);
+            if ($form->isSubmitted()) {
 
-        $user = new User();
-        $user->setRoles(["EMPLOYE"]);
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+                $user->setPassword(
+                    $this->passwordEncoder->encodePassword($user, $form->get("password")->getData())
+                );
+                $user->setToken($this->generateToken());
+                //dd($user);
+                //$em = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
 
-
-        if($form->isSubmitted() ) {
-
-            $user->setPassword(
-                $this->passwordEncoder->encodePassword($user, $form->get("password")->getData())
-            );
-            $user->setToken($this->generateToken());
-            //dd($user);
-            //$em = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_employe_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_employe_index', [], Response::HTTP_SEE_OTHER);
+            }
+            else
+            return $this->renderForm('employe/new.html.twig', [
+                'user' => $user,
+                'form' => $form,
+            ]);
         }
+        else
+            return $this->render('error_modal.html.twig');
 
-        return $this->renderForm('employe/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
     }
 
-    /**
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @return Response
-     */
+
     #[Route('/newGrh', name: 'app_grh_new', methods: ['GET', 'POST'])]
-    public function newGRH(Request $request, EntityManagerInterface $entityManager): Response
+    public function newGRH(Security $security,Request $request, EntityManagerInterface $entityManager): Response
     {
-        $user = new User();
-        $user->setRoles(["GRH"]);
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        if($security->getUser()->getRoles()==["ADMIN"] ) {
+            $user = new User();
+            $user->setRoles(["GRH"]);
+            $form = $this->createForm(UserType::class, $user);
+            $form->handleRequest($request);
+            if ($form->isSubmitted()) {
 
+                $user->setPassword(
+                    $this->passwordEncoder->encodePassword($user, $form->get("password")->getData())
+                );
+                $user->setToken($this->generateToken());
+                //dd($user);
+                //$em = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
 
-        if($form->isSubmitted() ) {
+                return $this->redirectToRoute('app_grh_index', [], Response::HTTP_SEE_OTHER);
+            } else
 
-            $user->setPassword(
-                $this->passwordEncoder->encodePassword($user, $form->get("password")->getData())
-            );
-            $user->setToken($this->generateToken());
-            //dd($user);
-            //$em = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+                return $this->renderForm('grh/new.html.twig', [
+                    'user' => $user,
+                    'form' => $form,
+                ]);
+        }else
+            return $this->render('error_modal.html.twig');
 
-            return $this->redirectToRoute('app_grh_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('grh/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
     }
-    #[Route('/newEmploye', name: 'app_emp_new', methods: ['GET', 'POST'])]
-    public function newEmp(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $user = new User();
-        $user->setRoles(["GRH"]);
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_grh_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('grh/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }
     #[Route('/employe/{id}', name: 'app_employe_show', methods: ['GET'])]
-    public function show(User $user,PdfService $pdf)
+    public function show(User $user,PdfService $pdf,Security $security)
     {
-        /*$html = $this->render('employe/show.html.twig', ['user' => $user]);
-        $pdf->showPdFile($html);*/
-         return $this->render('employe/show.html.twig', [
-            'user' => $user,
-        ]);
+
+            /*$html = $this->render('employe/show.html.twig', ['user' => $user]);
+            $pdf->showPdFile($html);*/
+            return $this->render('employe/show.html.twig', [
+                'user' => $user,
+
+            ]);
+
+
     }
     #[Route('/grh/{id}', name: 'app_grh_show', methods: ['GET'])]
-    public function showGrh(User $user,PdfService $pdf)
+    public function showGrh(Security $security,User $user,PdfService $pdf)
     {
         /*$html = $this->render('employe/show.html.twig', ['user' => $user]);
         $pdf->showPdFile($html);*/
-        return $this->render('grh/show.html.twig', [
-            'user' => $user,
-        ]);
+        if($security->getUser()->getRoles()==["GRH"]
+            || $security->getUser()->getRoles()==["ADMIN"] ){
+            return $this->render('grh/show.html.twig', [
+                'user' => $user,
+            ]);
+        }else
+            return $this->render('error_modal.html.twig');
+
     }
-
     #[Route('/{id}/edit/employe', name: 'app_employe_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function edit(Security $security,Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        if($security->getUser()->getRoles()==["EMPLOYE"]
+            || $security->getUser()->getRoles()==["ADMIN"]) {
+            $form = $this->createForm(UserType::class, $user);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $form->handleRequest($request);
 
-            return $this->redirectToRoute('app_employe_index', [], Response::HTTP_SEE_OTHER);
-        }
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->flush();
 
-        return $this->renderForm('employe/edit.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+                return $this->redirectToRoute('app_employe_index', [], Response::HTTP_SEE_OTHER);
+            } else
+                return $this->renderForm('employe/edit.html.twig', [
+                    'user' => $user,
+                    'form' => $form,
+                ]);
+        }else
+        return $this->render('error_modal.html.twig');
     }
     #[Route('/{id}/edit/Grh', name: 'app_grh_edit', methods: ['GET', 'POST'])]
-    public function editGrh(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function editGrh(Request $request,Security $security ,User $user, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        if($security->getUser()->getRoles()==["GRH"]
+            || $security->getUser()->getRoles()==["ADMIN"]) {
+            $form = $this->createForm(UserType::class, $user);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_grh_index', [], Response::HTTP_SEE_OTHER);
-        }
+                return $this->redirectToRoute('app_grh_index', [], Response::HTTP_SEE_OTHER);
+            } else
 
-        return $this->renderForm('grh/edit.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+                return $this->renderForm('grh/edit.html.twig', [
+                    'user' => $user,
+                    'form' => $form,
+                ]);
+        }else
+            return $this->render('error_modal.html.twig');
     }
     #[Route('/{id}/employe', name: 'app_employe_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, User $user,Security $security, EntityManagerInterface $entityManager): Response
     {
+        if($security->getUser()->getRoles()==["ADMIN"] ||
+           $security->getUser()->getRoles()==["GRH"]){
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
-        }
-
+        }else
         return $this->redirectToRoute('app_employe_index', [], Response::HTTP_SEE_OTHER);
+       }
+            return $this->render('error_modal.html.twig');
+
     }
     #[Route('/{id}/grh', name: 'app_grh_delete', methods: ['POST'])]
-    public function deleteGrh(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function deleteGrh(Security $security,Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($user);
-            $entityManager->flush();
+        if($security->getUser()->getRoles()==["ADMIN"]){
+            if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+                $entityManager->remove($user);
+                $entityManager->flush();
+                return $this->redirectToRoute('app_employe_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
+        return $this->render('error_modal.html.twig');
 
-        return $this->redirectToRoute('app_employe_index', [], Response::HTTP_SEE_OTHER);
+
     }
 
     /**

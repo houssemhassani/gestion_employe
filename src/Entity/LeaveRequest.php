@@ -30,9 +30,16 @@ class LeaveRequest
 
     #[ORM\Column]
     private ?int $numberOfDayLeaved = null;
+    #[ORM\Column]
+    private ?bool $typeOfLeaveRequest=null;
 
 
-
+    public function getTypeOfLeaveRequest(): ?bool{
+        return $this->typeOfLeaveRequest;
+    }
+    public function setTypeOfLeaveRequest(bool $typeOf){
+        $this->typeOfLeaveRequest=$typeOf;
+    }
     public function __construct()
     {
         $this->employee = new ArrayCollection();

@@ -1,0 +1,36 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}Attendance index{% endblock %}
+
+{% block body %}
+    <h1>Attendance index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>CreatedAt</th>
+            <th>UpdateAt</th>
+            <th>TypeOfAttendace</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for attendance in attendances %}
+            <tr>
+                <td>{{ attendance.CreatedAt ? attendance.CreatedAt|date('Y-F-j ') : '' }}</td>
+                <td>{{ attendance.UpdateAt ? attendance.UpdateAt|date('Y-m-j ') : '' }}</td>
+                <td>{{ attendance.typeOfAttendace ? 'P' : 'A' }}</td>
+                <td>
+                    <a href="{{ path('app_attendance_show', {'id': attendance.id}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
